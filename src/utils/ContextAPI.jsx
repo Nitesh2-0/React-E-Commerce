@@ -15,6 +15,8 @@ const ContextAPI = (props) => {
     }
   };
 
+  console.log(products);
+
   useEffect(() => {
     getProducts();
   }, []);

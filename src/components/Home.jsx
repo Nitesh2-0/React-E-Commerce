@@ -21,7 +21,7 @@ const Home = () => {
     }
   }
   useEffect(() => {
-    if(!filterproduct) setfilterproduct(products)
+    if(!filterproduct || category == 'undefined') setfilterproduct(products)
     if (category != "undefined") getcategorywiseproduct();
   }, [category,products])
  
@@ -30,7 +30,7 @@ const Home = () => {
     <>
       <Nav />
       {products ? (
-        <div className="flex flex-wrap justify-center overflow-x-hidden overflow-y-auto0 w-screen h-screen gap-5 p-5">
+        <div className="flex flex-wrap justify-center overflow-x-hidden overflow-y-auto0 w-screen h-screen gap-5 p-5 pt-12">
           {filterproduct && filterproduct.map((product, index) => (
             <Link to={`/details/${product.id}`} key={index} className="card border shadow rounded w-full sm:w-[45%] md:w-[30%] lg:w-[20%] xl:w-[15%] h-[30vh] flex flex-col p-3 justify-center items-center">
               <div className="hover:scale-110 mb-3 w-full h-[80%] bg-contain bg-center bg-no-repeat" style={{ backgroundImage: `url(${product.image})` }}></div>
