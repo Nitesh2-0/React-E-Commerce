@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from '../utils/axios';
 import Loading from './Loading';
 import { ProductContext } from './../utils/ContextAPI';
+import { toast } from 'react-toastify';
 
 const Details = () => {
+  const navigate = useNavigate()
   const[products, setProducts] = useContext(ProductContext)
   const [product, setProduct] = useState(null);
-  const { id } = useParams();
+  const {id} = useParams()
 
   // const getSingleProduct = async () => {
   //   try {
@@ -20,8 +22,18 @@ const Details = () => {
 
   useEffect(() => {
     // getSingleProduct();
-    if(!product) setProduct(products.filter((p) => p.id == id)[0])
+    if(!product) {
+      setProduct(products.filter((p) => p.id == id)[0])
+    }
   }, []);
+
+  const productDeleteHandler = (id) => {
+    const filteredProducts = products.filter((p) => p.id !== id)
+    setProducts(filteredProducts)
+    localStorage.setItem("products", JSON.stringify(filteredProducts))
+    toast.success("product deleted successfully")
+    navigate("/")
+  }
 
   return (
     product ? (
@@ -33,14 +45,14 @@ const Details = () => {
           <h2 className="text-3xl lg:text-4xl text-green-600 mb-4">$ {product.price}</h2>
           <p className="text-lg lg:text-xl text-gray-700 mb-6">{product.description}</p>
           <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 justify-center lg:justify-start">
-            <Link to="#" className="bg-blue-600 md:bg-white border-blue-200 border font-semibold px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition lg:w-auto flex items-center justify-center lg:justify-start">
+            <Link to={`/edit/${product.id}`} className="bg-blue-600 md:bg-white border-blue-200 border font-semibold px-4 py-2 rounded hover:bg-blue-500 hover:text-white transition lg:w-auto flex items-center justify-center lg:justify-start">
               <span className="lg:hidden text-white">Edit</span>
               <span className="hidden lg:inline">Edit</span>
             </Link>
-            <Link to="#" className="bg-red-600 md:bg-white border-red-200 border font-semibold px-4 py-2 rounded hover:bg-red-500 hover:text-white transition lg:w-auto flex items-center justify-center lg:justify-start">
+            <button onClick={() => productDeleteHandler(product.id)} className="bg-red-600 md:bg-white border-red-200 border font-semibold px-4 py-2 rounded hover:bg-red-500 hover:text-white transition lg:w-auto flex items-center justify-center lg:justify-start">
               <span className="lg:hidden text-white">Delete</span>
               <span className="hidden lg:inline">Delete</span>
-            </Link>
+            </button>
           </div>
         </div>
       </div>

@@ -12,17 +12,22 @@ const Home = () => {
   const [filterproduct, setfilterproduct] = useState(null)
 
   const category = decodeURIComponent(search.split('=')[1]);
-  const getcategorywiseproduct = async () => {
-    try {
-      const { data } = await axios.get(`products/category/${category}`)
-      setfilterproduct(data)
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const getcategorywiseproduct = async () => {
+  //   try {
+  //     const { data } = await axios.get(`products/category/${category}`)
+  //     setfilterproduct(data)
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
   useEffect(() => {
-    if(!filterproduct || category == 'undefined') setfilterproduct(products)
-    if (category != "undefined") getcategorywiseproduct();
+    if(!filterproduct || category == 'undefined') {
+      setfilterproduct(products)
+    }
+    if (category != "undefined") {
+      // getcategorywiseproduct()
+      setfilterproduct(products.filter(p => p.category == category))
+    };
   }, [category,products])
  
 

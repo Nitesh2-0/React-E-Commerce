@@ -2,8 +2,10 @@ import React, { useContext, useState } from "react";
 import { ProductContext } from "../utils/ContextAPI";
 import { toast } from "react-toastify";
 import { nanoid } from "nanoid";
+import { useNavigate} from "react-router-dom";
 
 const Create = () => {
+  const navigate = useNavigate()
   const [products, setProducts] = useContext(ProductContext)
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
@@ -21,7 +23,7 @@ const Create = () => {
       description.trim().length < 5 ||
       price.trim().length < 1
     ) {
-      toast.error('At least 4 characters required.');
+      alert('At least 4 characters required. not expection in price.');
       return;
     }
 
@@ -34,8 +36,10 @@ const Create = () => {
       description
     };
 
-    setProducts(prevProducts => [...prevProducts, product]);
-    toast.success("New Product Added Successfully");
+    setProducts([...products, product]);
+    localStorage.setItem("products", JSON.stringify([...products, product]))
+    toast.success("product created successfully")
+    navigate('/')
   };
 
   return (
